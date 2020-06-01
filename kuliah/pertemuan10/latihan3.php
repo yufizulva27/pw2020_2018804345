@@ -21,7 +21,9 @@ $mahasiswa = query("SELECT * FROM mahasiswa");
   <div class="alert alert-primary" role="alert">
     <h1 align="center">Daftar Mahasiswa</h1>
   </div>
-</div>
+
+    <a href="tambah.php" class="btn btn-primary">Tamba Data Baru</a>
+</div><br>
 <div class="container">
     <table class="table table-striped">
     <form action="" method="post">

@@ -20,4 +20,24 @@ function query($query) {
 
   return $rows;
 }
+
+function tambah($data) {
+  // var_dump($data)
+  $conn = koneksi();
+
+  // query insert data
+  $npm = htmlspecialchars($data['npm']);
+  $nama = htmlspecialchars($data['nama']);
+  $email = htmlspecialchars($data['email']);
+  $jurusan = htmlspecialchars($data['jurusan']);
+  $img = htmlspecialchars($data['gambar']);
+
+  $query = ("INSERT INTO mahasiswa VALUES('''', '$nama', '$npm', '$email', '$jurusan', '$img')");
+
+  mysqli_query($conn, $query);
+  echo mysqli_error($conn);
+  return mysqli_affected_rows($conn);
+
+}
+
 ?>
