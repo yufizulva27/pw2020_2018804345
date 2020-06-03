@@ -1,6 +1,12 @@
 <?php 
 require 'functions.php';
 
+// jika tidak ada id di url maka paksa ke index
+if(!isset($_GET['id'])) {
+  header("Location: index.php");
+  exit;
+}
+
 $id = $_GET['id'];
 
 if (hapus($id) > 0) {

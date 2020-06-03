@@ -1,6 +1,12 @@
 <?php 
 require 'functions.php';
 
+// jika tidak ada id di url maka paksa ke index
+if(!isset($_GET['id'])) {
+  header("Location: index.php");
+  exit;
+}
+
 // ambil data dari url
 $id = $_GET['id'];
 
@@ -39,8 +45,9 @@ if (isset($_POST["update"])) {
 </head>
 <body>
 <h3>Update Data</h3>
-<input type="hidden" name="id" value="<?= $m['id']; ?>">
+
 <form action="" method="POST">
+<input type="hidden" name="id" value="<?= $m['id']; ?>">
   <ul>
     <li>
       <label for="npm">
