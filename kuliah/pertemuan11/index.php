@@ -3,6 +3,10 @@ require 'functions.php';
 
 $mahasiswa = query("SELECT * FROM mahasiswa");
 
+if(isset($_POST['search'])) {
+  $mahasiswa = search($_POST['keyword']);
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -21,9 +25,15 @@ $mahasiswa = query("SELECT * FROM mahasiswa");
   <div class="alert alert-primary" role="alert">
     <h1 align="center">Daftar Mahasiswa</h1>
   </div>
+  
+    <nav class="navbar navbar-light bg-light">
+      <a href="tambah.php" class="btn btn-primary">Tamba Data Baru</a>
+      <form class="form-inline" action="" method="post">
+        <input class="form-control mr-sm-2" type="search" name="keyword" placeholder="Search" aria-label="Search" autocomplete="off" autofocus>
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit" name="search">Search</button>
+      </form>
+    </nav>
 
-    <a href="tambah.php" class="btn btn-primary">Tamba Data Baru</a>
-</div><br>
 <div class="container">
     <table class="table table-striped">
     <form action="" method="post">
@@ -35,6 +45,14 @@ $mahasiswa = query("SELECT * FROM mahasiswa");
         <th scope="col">Opsi</th>
       </tr>
     </thead>
+
+  <?php if(empty($mahasiswa)) : ?>
+    <tr>
+      <td colspan="4">
+        <p style="color: red; font-style: italic; font-size: 30px;" align="center" >Data tidak ditemukan!</p>
+      </td>
+    </tr>
+  <?php endif; ?>
 
   <?php $i=1;
   foreach($mahasiswa as $mhs) : ?>
