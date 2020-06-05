@@ -43,7 +43,7 @@ if(isset($_POST['search'])) {
     </nav>
   </div>
 
-<div class="container">
+<div class="table-ajax container">
     <table class="table table-striped">
       <form action="" method="post">
       <thead class="thead-dark">
