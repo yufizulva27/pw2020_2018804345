@@ -39,7 +39,7 @@ if (isset($_POST['tambah'])) {
 </head>
 <body>
 <h3>Tambah Data Baru</h3>
-<form action="" method="POST">
+<form action="" method="POST" enctype="multipart/form-data">
   <ul>
     <li>
       <label for="npm">
@@ -68,8 +68,9 @@ if (isset($_POST['tambah'])) {
     <li>
       <label for="gambar">
         Image :
-        <input type="text" name="gambar" id="gambar" required>
+        <input type="file" name="gambar" id="gambar" class="image" onchange="previewImage()">
       </label>
+      <img src="img/nophoto.png" width="120" style="display: block;" class="img-preview">
         <li>
           <button type="submit" name="tambah">Tambahkan</button>
         </li>
@@ -80,5 +81,7 @@ if (isset($_POST['tambah'])) {
 
 <a href="index.php">kembali</a>
   
+
+<script src="js/script.js"></script>
 </body>
 </html>

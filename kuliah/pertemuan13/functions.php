@@ -21,6 +21,77 @@ function query($query) {
   return $rows;
 }
 
+function upload() {
+  // var_dump($_FILES); die;
+  // ambil dari tiap tiap data yg ada di arraynya, supaya mudah dalam penanganan kesalahan
+  $name_file = $_FILES['gambar']['name'];
+  $type_file = $_FILES['gambar']['type'];
+  $tmp_file = $_FILES['gambar']['tmp_name'];
+  $error = $_FILES['gambar']['error'];
+  $size_file = $_FILES['gambar']['size'];
+
+  // cek ketika tidak ada gambar yg dipilih
+  if($error == 4) {
+    // echo "
+    //   <script>
+    //     alert('Pilih gambar terlebih dahulu!');
+    //   </script>
+    // ";
+
+    return 'nophoto.png';
+  }
+
+  // cek eksstensi file
+  $daftarFileGambar = ['jpg', 'jpeg', 'png'];
+  $ekstensi_file = explode('.', $name_file);
+  $ekstensi_file = strtolower(end($ekstensi_file));
+  // var_dump($ekstensi_file); die;
+  //  if(in_array()) apakah sebuah nilai itu ada didalam array atay tidak. buat kebalikannya yaitu negasi '!'
+  if(!in_array($ekstensi_file, $daftarFileGambar)) {
+    echo "
+      <script>
+        alert('File yang anda pilih bukan gambar!');
+      </script>
+    ";
+
+    return false;
+  }
+
+  // cek type file
+  if ($type_file != 'image/jpg' && $type_file != 'image/jpeg' && $type_file != 'image/png') {
+    echo "
+      <script>
+        alert('File yang anda pilih bukan gambar!');
+      </script>
+    ";
+
+    return false;
+  }
+
+  // cek ukuran file
+  // max size 3Mb = 3000000
+  if ($size_file > 3000000) {
+    echo "
+      <script>
+        alert('Ukuran file terlalu besar!');
+      </script>
+    ";
+
+    return false;
+  }
+
+  // genarate nama file atau rubah nama file lama jadi nama file baru
+  $nameFileBaru = uniqid();
+  $nameFileBaru .= '.';
+  $nameFileBaru .= $ekstensi_file;
+  // var_dump($nameFileBaru); die;
+
+  // lolos pengecekan, upload file
+  move_uploaded_file($tmp_file, 'img/' . $nameFileBaru);
+
+  return $nameFileBaru;
+}
+
 function tambah($data) {
   // var_dump($data)
   $conn = koneksi();
@@ -30,7 +101,14 @@ function tambah($data) {
   $nama = htmlspecialchars($data['nama']);
   $email = htmlspecialchars($data['email']);
   $jurusan = htmlspecialchars($data['jurusan']);
-  $img = htmlspecialchars($data['gambar']);
+  // $img = htmlspecialchars($data['gambar']);
+
+// upload gambar
+  $img = upload();
+  // berikan nilai false jika tidak ada gambar yg di upload
+  if(!$img) {
+    return false;
+  }
 
   $query = ("INSERT INTO mahasiswa VALUES('', '$nama', '$npm', '$email', '$jurusan', '$img')");
 
@@ -41,6 +119,11 @@ function tambah($data) {
 
 function hapus($id) {
   $conn = koneksi();
+
+  $mhs = query("SELECT * FROM mahasiswa WHERE id = $id");
+  if($mhs['gambar'] != 'nophoti.png') {
+    unlink('img/' . $mhs['gambar']);
+  }
 
   // query delete data
   mysqli_query($conn, "DELETE FROM mahasiswa WHERE id = $id") or die(mysqli_error($conn));
@@ -58,7 +141,16 @@ function update($data) {
   $nama = htmlspecialchars($data['nama']);
   $email = htmlspecialchars($data['email']);
   $jurusan = htmlspecialchars($data['jurusan']);
-  $img = htmlspecialchars($data['gambar']);
+  $img_lama = htmlspecialchars($data['gambar_lama']);
+
+  $img = upload();
+  if(!$img){
+    return false;
+  }
+
+  if($img == 'nophoto.png') {
+    $img = $img_lama;
+  }
 
   $query = "UPDATE mahasiswa SET
               nama = '$nama',

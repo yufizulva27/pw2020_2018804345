@@ -72,7 +72,7 @@ if(isset($_POST['search'])) {
             <td><?= $mhs['nama']; ?></td>
             <td>
               <a href="detail.php?id=<?= $mhs['id']; ?>" class="btn btn-info">Lihat Detail</a>
-              <a href="hapus.php?id=<?= $mhs['id']; ?>" class="btn btn-danger" onclick="return confirm('Apakah anda yakin')">Delete</a>
+              <a href="hapus.php?id=<?= $mhs['id']; ?>" class="btn btn-danger" onclick="return confirm('Apakah anda yakin ingin menghapus data ini?')">Delete</a>
             </td>
           </tr>
         </tbody>
